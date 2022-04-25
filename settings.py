@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-&2&&o*j21t4y4fe8%2syqf0ftk70wk-8x6=p386!ga2@^1$uwm'
+SECRET_KEY = str(os.getenv('DJANGO_PROD'))
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -84,7 +84,7 @@ DATABASES = {
         'NAME': 'engine',
         'CLIENT': {
                 'host':
-                    'mongodb+srv://Palvoluss:5L7ZX5Z8VOAFrwE4@cluster0.gvx6z.mongodb.net/engine?retryWrites=true&w=majority',
+                    'mongodb+srv://' + str(os.getenv('MONGO_USER')) + ':' + str(os.getenv('MONGO_PWD'))+ '@'+ str(os.getenv('MONGO_CLUST_NAME')) +'.gvx6z.mongodb.net/engine?retryWrites=true&w=majority',
             }
     }
 }
@@ -124,11 +124,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
+PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
+STATIC_ROOT = os.path.join(PROJECT_DIR, 'static')
 STATIC_URL = '/static/'
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'static'),
-)
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
