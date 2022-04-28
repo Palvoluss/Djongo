@@ -321,11 +321,15 @@ li > code {
 /* FOOTER */
 
 footer {
-    text-align: center;
     position: fixed;
     bottom: 0;
+    display: flex;
+    justify-content: center;
     line-height: 1.5em;
-    font-family: var(--cf-serif);
+    padding: 1em 2em;
+    background: var(--cf-background);
+    border-top: 4px solid var(--cf-black);
+    width: 100%;
 }
 
 footer a {
