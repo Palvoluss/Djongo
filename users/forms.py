@@ -5,10 +5,10 @@ from django.core.exceptions import ValidationError
 
 
 class UserSignInForm(UserCreationForm):
-    username = forms.CharField(label="Username", min_length=4, max_length=75, required=True)
-    email = forms.EmailField(label="Email", required=True)
-    password1 = forms.CharField(label="Password", widget=forms.PasswordInput)
-    password2 = forms.CharField(label="Confirm password", widget=forms.PasswordInput)
+    username = forms.CharField(label="username", min_length=4, max_length=75, required=True)
+    email = forms.EmailField(label="email", required=True)
+    password1 = forms.CharField(label="password", widget=forms.PasswordInput)
+    password2 = forms.CharField(label="confirm password", widget=forms.PasswordInput)
     f_name = forms.CharField(max_length=75)
     l_name = forms.CharField(max_length=75)
 

@@ -19,11 +19,10 @@ def register(request):
             user = form.save()
             token_balance = generate_random_number(10)
             wallet = Wallet.objects.create(
-                profile = user, token_balance = token_balance
+                user = user, token_balance = token_balance
             )
             wallet.save()
             messages.success(request, f"Your account has been created! You are now able to log in and start trade your token")
-            form.save()
             return redirect('login')
             
     else: 

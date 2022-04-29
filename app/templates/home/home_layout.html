@@ -3,15 +3,45 @@
 <body>
     {% block pagecontent %}
     <div class="container">
-        <div class="card fixed block">
-            <h2>Welcome User</h2>
-            <hr>
-            <p>It's a beautiful day to trade some token! Here's some prices!</p>
-            <div class="d-flex justify-content-between">
-                <button class="fixed block">BTC: 232344$</button> 
-                <button class="fixed block">ETH: 23234$</button> 
-                <button class="fixed block">ETC: 2324$</button> 
+        {% if user.is_authenticated %}
+            <div class="card fixed block">
+                <h2>Welcome {{ user }}</h2>
+                <hr>
+                <p>Here's your summary</p>
+                <div class="d-flex justify-content-around">
+                    <div>
+                        <p>Your Fiat Balance</p>
+                        <div class="d-flex">
+                            <button class="fixed block">BTC: 232344$</button> 
+                        </div>
+                    </div>
+                    <div>
+                        <p>Your Token Balance</p>
+                        <div class="d-flex">
+                            <button class="fixed block">BTC: 232344$</button> 
+                            <button class="fixed block">ETH: 23234$</button> 
+                        </div>
+                    </div>
+    
+                </div>
+            </div>
+        {% else %}
+            <div class="card fixed block">
+                <h2>Welcome User</h2>
+                <hr>
+                <p>It's a beautiful day to trade some token! Here's some prices!</p>
+                <div class="d-flex justify-content-between">
+                    <button class="fixed block">BTC: 232344$</button> 
+                    <button class="fixed block">ETH: 23234$</button> 
+                    <button class="fixed block">ETC: 2324$</button> 
 
+                </div>
+            </div>
+        {% endif %}
+        <div class="container">
+            <div class="card fixed block">
+                <button class="block"><a href="https://coinmarketcap.com/currencies/bitcoin/" class="orange-text text-lighten-2">
+                    BTC: {{ token_price|floatformat:4 }} $</a></button>
             </div>
         </div>
     </div>

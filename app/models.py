@@ -11,6 +11,7 @@ class Wallet(models.Model):
 
     def save(self, *args, **kwargs):
         super(Wallet, self).save(*args, **kwargs)
+        
 class Order(models.Model):
     _id = ObjectIdField()
     user = models.ForeignKey(User, on_delete=models.CASCADE)
