@@ -12,14 +12,13 @@
                     <div>
                         <p>Your Fiat Balance</p>
                         <div class="d-flex">
-                            <button class="fixed block">BTC: 232344$</button> 
+                            <button class="fixed block">$: {{balance.fiat}}</button> 
                         </div>
                     </div>
                     <div>
                         <p>Your Token Balance</p>
                         <div class="d-flex">
-                            <button class="fixed block">BTC: 232344$</button> 
-                            <button class="fixed block">ETH: 23234$</button> 
+                            <button class="fixed block">BTC: {{balance.token}}</button>
                         </div>
                     </div>
     
@@ -31,9 +30,12 @@
                 <hr>
                 <p>It's a beautiful day to trade some token! Here's some prices!</p>
                 <div class="d-flex justify-content-between">
-                    <button class="fixed block">BTC: 232344$</button> 
-                    <button class="fixed block">ETH: 23234$</button> 
-                    <button class="fixed block">ETC: 2324$</button> 
+                    <button class="block"><a href="https://coinmarketcap.com/currencies/bitcoin/" class="orange-text text-lighten-2">
+                        BTC: {{ tokens_price.BTC|floatformat:4 }} $</a></button>
+                    <button class="block"><a href="https://coinmarketcap.com/currencies/bitcoin/" class="orange-text text-lighten-2">
+                        ETH: {{ tokens_price.ETH|floatformat:4 }} $</a></button>
+                    <button class="block"><a href="https://coinmarketcap.com/currencies/bitcoin/" class="orange-text text-lighten-2">
+                        XRP: {{ tokens_price.XRP|floatformat:4 }} $</a></button>
 
                 </div>
             </div>
