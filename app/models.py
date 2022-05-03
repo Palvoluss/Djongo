@@ -17,7 +17,7 @@ class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     type = models.CharField(choices=(("buy", "buy"), ("sell", "sell")), max_length=20)
     order_status = models.CharField(choices=(("pending", "pending"),("failed", "failed"), ("completed", "completed")), max_length=20)
-    token_pice = models.FloatField()
+    token_price = models.FloatField()
     token_qty = models.FloatField()
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)

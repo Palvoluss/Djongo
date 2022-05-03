@@ -4,46 +4,62 @@
     {% block pagecontent %}
     <div class="container">
         {% if user.is_authenticated %}
-            <div class="card fixed block">
-                <h2>Welcome {{ user }}</h2>
-                <hr>
-                <p>Here's your summary</p>
-                <div class="d-flex justify-content-around">
-                    <div>
-                        <p>Your Fiat Balance</p>
-                        <div class="d-flex">
-                            <button class="fixed block">$: {{balance.fiat}}</button> 
-                        </div>
+        <div class="card fixed block">
+            <h2>Welcome {{ user }}</h2>
+            <hr>
+            <p>Here's your summary</p>
+            <div class="d-flex justify-content-around">
+                <div>
+                    <p>Your Fiat Balance</p>
+                    <div class="d-flex">
+                        <button class="fixed block">$: {{balance.fiat}}</button>
                     </div>
-                    <div>
-                        <p>Your Token Balance</p>
-                        <div class="d-flex">
-                            <button class="fixed block">BTC: {{balance.token}}</button>
-                        </div>
-                    </div>
-    
                 </div>
+                <div>
+                    <p>Your Token Balance</p>
+                    <div class="d-flex">
+                        <button class="fixed block">BTC: {{balance.token}}</button>
+                    </div>
+                </div>
+
             </div>
+        </div>
         {% else %}
-            <div class="card fixed block">
-                <h2>Welcome User</h2>
-                <hr>
-                <p>It's a beautiful day to trade some token! Here's some prices!</p>
-                <div class="d-flex justify-content-between">
-                    <button class="block"><a href="https://coinmarketcap.com/currencies/bitcoin/" class="orange-text text-lighten-2">
+        <div class="card fixed block">
+            <h2>Welcome User</h2>
+            <hr>
+            <p>It's a beautiful day to trade some token! Here's some prices!</p>
+            <div class="d-flex justify-content-between">
+                <button class="block"><a href="https://coinmarketcap.com/currencies/bitcoin/"
+                        class="orange-text text-lighten-2">
                         BTC: {{ tokens_price.BTC|floatformat:4 }} $</a></button>
-                    <button class="block"><a href="https://coinmarketcap.com/currencies/bitcoin/" class="orange-text text-lighten-2">
+                <button class="block"><a href="https://coinmarketcap.com/currencies/bitcoin/"
+                        class="orange-text text-lighten-2">
                         ETH: {{ tokens_price.ETH|floatformat:4 }} $</a></button>
-                    <button class="block"><a href="https://coinmarketcap.com/currencies/bitcoin/" class="orange-text text-lighten-2">
+                <button class="block"><a href="https://coinmarketcap.com/currencies/bitcoin/"
+                        class="orange-text text-lighten-2">
                         XRP: {{ tokens_price.XRP|floatformat:4 }} $</a></button>
 
-                </div>
             </div>
+        </div>
         {% endif %}
         <div class="container">
             <div class="card fixed block">
-                <button class="block"><a href="https://coinmarketcap.com/currencies/bitcoin/" class="orange-text text-lighten-2">
-                    BTC: {{ token_price|floatformat:4 }} $</a></button>
+                <div class="d-flex justify-content-around">
+                    {% if can_buy %}
+                    <button class="block"><a href="" class="orange-text text-lighten-2">
+                            Buy Bitcoin</a></button>
+                    {% endif %}
+                    {% if can_sell %}
+                    <button class="block"><a href="" class="orange-text text-lighten-2">
+                            Sell Bitcoin</a></button>
+                    {% endif %}
+                    {% if can_buy or can_sell %}
+                    <button class="block"><a href="" class="orange-text text-lighten-2">
+                            Place an Order</a></button>
+                    {% endif %}
+                </div>
+
             </div>
         </div>
     </div>
