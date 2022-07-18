@@ -1,0 +1,14 @@
+{% extends 'home/home_layout.html' %} 
+
+{% block sell_buy %}
+
+<div class="d-flex justify-content-around align-items-end">
+  <form action="" method="POST">
+    {% csrf_token %}
+    {{form}}
+    <input  class="block" type="submit" name="Sell to MCP"></input>
+  </form>
+
+</div>
+
+{% endblock sell_buy %}

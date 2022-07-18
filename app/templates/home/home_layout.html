@@ -45,23 +45,24 @@
         {% endif %}
         <div class="container">
             <div class="card fixed block">
-                <div class="d-flex justify-content-around">
+                <div class="d-flex justify-content-around flex-column">
                     {% if can_buy %}
                     <button class="block"><a href="" class="orange-text text-lighten-2">
                             Buy Bitcoin</a></button>
                     {% endif %}
                     {% if can_sell %}
-                    <button class="block"><a href="" class="orange-text text-lighten-2">
+                    <button class="block"><a href="{% url 'selling_to_MCP' %}" class="orange-text text-lighten-2">
                             Sell Bitcoin</a></button>
                     {% endif %}
                     {% if can_buy or can_sell %}
-                    <button class="block"><a href="" class="orange-text text-lighten-2">
+                    <button class="block"><a href="{% url 'place_order' %}" class="orange-text text-lighten-2">
                             Place an Order</a></button>
                     {% endif %}
+                    {% block sell_buy %} {% endblock sell_buy %}
                 </div>
 
             </div>
         </div>
     </div>
-    {% endblock %}
+    {% endblock pagecontent %}
 </body>

@@ -39,4 +39,13 @@ class CMC_Info_About:
         price = round(list(filter(lambda crypto: crypto['symbol'] == 'XRP', r['data']))[0]['quote']['USD']['price'], 8)
         return price
 
+    def get_BTC_ETH_XRP_dict(self):
+        # Helper to return a dict of tokens_price
+        tokens_price = {
+        'BTC': CMC_Info_About().get_btc_data(),
+        'ETH': CMC_Info_About().get_eth_data(),
+        'XRP': CMC_Info_About().get_xrp_data()
+        }
+        return tokens_price
+
 

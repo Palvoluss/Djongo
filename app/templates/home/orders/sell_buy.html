@@ -1,2 +1,13 @@
-{% extends 'base.html' %}
+{% extends 'home/home_layout.html' %} 
 
+{% block sell_buy %}
+
+<div class="d-flex justify-content-around align-items-end">{{form}}</div>
+
+<button class="block">
+  <a href="" class="orange-text text-lighten-2"> Place Sell Order</a>
+</button>
+<button class="block">
+  <a href="" class="orange-text text-lighten-2"> Place Buy Order</a>
+</button>
+{% endblock sell_buy %}

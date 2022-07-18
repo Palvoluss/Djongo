@@ -15,3 +15,17 @@ def get_user_balance(user):
     }
 
     return balance 
+
+def can_action(action, user_wallet, user_balance, token_qty, price):
+    if action == "sell":
+        if user_wallet.token_balance < token_qty:
+            return False
+        return True
+    else:
+        if user_balance < token_qty * price:
+            return False
+        return True
+
+def return_num(a):
+    return float(a)
+

@@ -1,46 +1,50 @@
+from django.contrib import messages
+from django.shortcuts import redirect
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 
 from app.cmc_price import CMC_Info_About
-from app.forms import OrderCreationForm
-from app.models import Wallet
-from app.utils import get_user_balance
+from app.forms import OrderCreationForm, SellForm
+from app.models import Order, Wallet
+from app.utils import can_action, get_user_balance, return_num
 
 
 def home(request):
-    tokens_price = {
-        'BTC': CMC_Info_About().get_btc_data(),
-        'ETH': CMC_Info_About().get_eth_data(),
-        'XRP': CMC_Info_About().get_xrp_data(),
-    }
     if request.user.is_authenticated:
         balance = get_user_balance(request.user)
         sell_available = balance['token'] is not None and balance['token'] > 0
         buy_availabile = balance['fiat'] is not None and balance['fiat'] > 0
-        print(buy_availabile, sell_available)
         return render(request, 'home/home_layout.html', {
-            'tokens_price': tokens_price, 
+            'tokens_price': CMC_Info_About().get_BTC_ETH_XRP_dict(), 
             'balance': balance,
             'can_buy': buy_availabile,
-            'can_sell': sell_available }
-            )
+            'can_sell': sell_available
+            })
     else:
         return render(request, 'home/home_layout.html', {
-        'tokens_price': tokens_price}
+        'tokens_price': CMC_Info_About().get_BTC_ETH_XRP_dict()}
         )
 
 @login_required
-def sellOrBuyFormMCP(request):
-    form = OrderCreationForm()
+def sellBtcToMCP(request):
+    balance = get_user_balance(request.user)
+    action = request.path.split('/').pop()
+    form = SellForm()
+    cmc_info = CMC_Info_About()
+
     if request.method == "POST":
-        form = OrderCreationForm(request.POST)
+        form = SellForm(request.POST)
+        print(cmc_info.get_btc_data())
         if form.is_valid():
             user_wallet = Wallet.objects.filter(user=request.user).first()
-            btc_quantity = form.cleaned_data["btc_quantity"]
+            btc_quantity = form.cleaned_data["token_qty"]
 
-            if not canSell(user_wallet, btc_quantity):
-                messages.error(request, "You do not have enouth BTC to sell ")
+            if not can_action(action, user_wallet, balance, btc_quantity, cmc_info.get_btc_data()):
+                if action == "sell":
+                    messages.error(request, "You do not have enough BTC to sell ")
+                else:
+                    messages.error(request, "You do not have enough money to buy BTC")
                 return redirect("home")
 
             order = form.save()
@@ -49,20 +53,64 @@ def sellOrBuyFormMCP(request):
             order.order_status = "pending"
             order.save()
 
-            user_wallet.btc_balance -= btc_quantity
+            user_wallet.token_balance -= btc_quantity
+            user_wallet.fiat_balance += btc_quantity * cmc_info.get_btc_data()
             user_wallet.save()
 
-            messages.success(request, "Your sell order has been placed!")
-            match_sell_order(order)
+            messages.success(request, "You sell your BTC to MCP, MCP praise you")
 
             return redirect("home")
 
     context = {
         "form": form,
         "orders": Order.objects.filter(user=request.user),
-        "balance": getUserBalance(request.user),
+        "balance": get_user_balance(request.user),
+        'tokens_price': CMC_Info_About().get_BTC_ETH_XRP_dict(),
     }
 
-    return render(request, "mainApp/order.html", context) 
+    return render(request, "home/orders/sell_to_mcp.html", context)
 
+@login_required
+def placeOrder(request):
+    user_balance = get_user_balance(request.user)
+    action = request.path.split('/').pop()
+    form = OrderCreationForm()
 
+    if request.method == "POST":
+        form = OrderCreationForm(request.POST)
+        if form.is_valid():
+            user_wallet = Wallet.objects.filter(user=request.user).first()
+            btc_quantity = form.cleaned_data["token_qty"]
+            price = form.cleaned_data["token_price"]
+
+            if not can_action(action, user_wallet, user_balance, btc_quantity, price):
+                if action == "order":
+                    messages.error(request, "You do not have enough BTC to sell ")
+                else:
+                    messages.error(request, "You do not have enough money to buy BTC")
+                return redirect("home")
+
+            order = form.save()
+            order.user = request.user
+            order.order_status = "pending"
+            order.save()
+
+            user_wallet.btc_balance -= btc_quantity
+            user_wallet.save()
+
+            messages.success(request, "Your sell order has been placed!")
+
+            return redirect("home")
+
+    context = {
+        "form": form,
+        "orders": Order.objects.filter(user=request.user),
+        "balance": get_user_balance(request.user),
+        'tokens_price': CMC_Info_About().get_BTC_ETH_XRP_dict(),
+    }
+
+    return render(request, "home/orders/sell_buy.html", context) 
+
+@login_required
+def sellBTCForm(rrequest):
+    return
