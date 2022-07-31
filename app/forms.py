@@ -29,3 +29,14 @@ class SellForm(forms.ModelForm):
     class Meta:
         model = Order
         fields = ["token_qty"]
+
+class BuyForm(forms.ModelForm):
+    def clean_price(self):
+        token_price = self.cleaned_data["token_price"]
+        if token_price < 0:
+            raise forms.ValidationError("Price can not be negative")
+        return token_price
+
+    class Meta:
+        model = Order
+        fields = ["token_price"]

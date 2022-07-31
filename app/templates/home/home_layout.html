@@ -47,7 +47,7 @@
             <div class="card fixed block">
                 <div class="d-flex justify-content-around flex-column">
                     {% if can_buy %}
-                    <button class="block"><a href="" class="orange-text text-lighten-2">
+                    <button class="block"><a href="{% url 'buying_from_MCP' %}" class="orange-text text-lighten-2">
                             Buy Bitcoin</a></button>
                     {% endif %}
                     {% if can_sell %}
